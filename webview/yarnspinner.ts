@@ -193,7 +193,7 @@ viewState.onSelectionChanged = (nodes) => {
 			let option = document.createElement("vscode-option");
 			option.nodeValue = node.title;
 			option.innerText = node.title;
-			return option;
+		 	return option;
 		})
 
 		dropdown.replaceChildren(icon, placeholderOption, ...nodeOptions);
@@ -231,25 +231,29 @@ viewState.onSelectionChanged = (nodes) => {
 	 * nodes.
 	 */
 	function nodesUpdated(data: NodesUpdatedEvent) {
-
-		let nodesWithDefaultPosition = 0;
+		let nodesWithDefaultPosition = [];
 		
 		for (let nodeInfo of data.nodes) {
 			let position = getPositionFromNodeInfo(nodeInfo);
 
 			if (!position) {
-				const position = {
-					x: newNodeOffset * nodesWithDefaultPosition,
-                    y: newNodeOffset * nodesWithDefaultPosition,
-                }
-				nodeInfo.headers.push({ key: "position", value: `${position.x},${position.y}` });
-                nodesWithDefaultPosition += 1;
-            }
+				nodesWithDefaultPosition.append(nodeInfo)
+			}
 		}
+
+		computeNodePositions(data.nodes, nodewsWithDefaultPosition)
 
 		viewState.nodes = data.nodes;
 
 		updateDropdownList(data);
+	}
+
+	function computeNodePositions(allNodes: NodeView[], nodesWithDefaultPosition: NodeView[]) {
+		if (nodesWithDefaultPosition.length == 0) return;
+		
+		// TODO: implement Coffman–Graham here
+		
+		// nodeInfo.headers.push({ key: "position", value: `${position.x},${position.y}` });
 	}
 }
 )();
